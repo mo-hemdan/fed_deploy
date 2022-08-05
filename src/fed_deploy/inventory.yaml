@@ -1,0 +1,26 @@
+clients:
+  hosts:
+    fc1:
+      ansible_host: 188.185.101.118
+      partition: 1
+      data_dir: /root/data
+      filename: data_batch_1
+    fc2:
+      ansible_host: 188.185.87.9
+      partition: 2
+      data_dir: /root/data
+      filename: data_batch_2
+    fc3:
+      ansible_host: 188.185.120.31
+      partition: 3
+      data_dir: /root/data
+      filename: data_batch_3
+server:
+  hosts:
+    fs:
+      ansible_host: 188.185.11.183
+monitor:
+  hosts:
+    fm:
+      ansible_host: 188.185.11.183
+   

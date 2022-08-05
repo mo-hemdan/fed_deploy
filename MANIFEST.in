@@ -1,0 +1,9 @@
+include install_req.yaml
+include ./fed_deploy/client_run.yaml
+include ./fed_deploy/server_run.yaml
+include ./fed_deploy/monitor_run.yaml
+include ./fed_deploy/inventory.yaml
+include ./fed_deploy/fed/client/Dockerfile
+include ./fed_deploy/fed/server/Dockerfile
+include ./fed_deploy/fed/monitor/Dockerfile
+include ./fed_deploy/ansible.cfg

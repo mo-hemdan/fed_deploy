@@ -1,0 +1,60 @@
+--- # Installing Docker and its requirements
+- hosts: monitor
+  remote_user: root
+  tasks:
+  - name: Remove a directory to store the fedmonitor image source files
+    file:
+      path: /root/federated_learning/monitor
+      state: absent
+  - name: Create a directory to store the fedmonitor image source files
+    file:
+      path: /root/federated_learning
+      state: directory
+  - name: Remove image
+    docker_image:
+      name: fedmonitor
+      state: absent
+      force_absent: yes
+    vars:
+      ansible_python_interpreter: /bin/python3
+  - name: remove container
+    docker_container:
+      name: fedmonitor
+      state: absent
+      force_kill: yes
+    vars:
+      ansible_python_interpreter: /bin/python3
+  - name: Pull the fedmonitor image source files from my local machine
+    copy:
+      src: "'{{ lookup('ansible.builtin.env', 'FED_DIRPATH') }}' /fed/monitor" #/home/mashrafhemdan/fl_deployment/federated_learning_infrastructure/fed/monitor
+      dest: /root/federated_learning
+  - name: Build monitor image and with build args
+    docker_image:
+      name: fedmonitor
+      build:
+        path: /root/federated_learning/monitor
+        # args:
+        #   listen_port: 5000
+      source: build
+    vars:
+      ansible_python_interpreter: /bin/python3
+  - name: Run fedmonitor container from the image file
+    docker_container:
+      name: fedmonitor
+      state: started
+      image: fedmonitor
+      detach: no
+      #interactive: yes
+      # tty: yes
+      recreate: yes
+      cleanup: yes
+      ports:
+        - "5050:5050"
+      restart_policy: always
+    register: monitor_output
+    vars:
+      ansible_python_interpreter: /bin/python3
+
+  - name: Monitor Output
+    debug:
+      msg: "Docker said: {{ monitor_output }}"

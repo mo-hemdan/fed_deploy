@@ -1,0 +1,35 @@
+--- # Installing Docker and its requirements
+- hosts: clients server
+  remote_user: root
+  tasks:
+  - name: Setup repo for Docker
+    yum_repository:
+      name: docker-ce-stable
+      description: Docker YUM repo
+      baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+  
+  - name: Install Docker Engine
+    yum:
+      name:
+        - docker-ce 
+        - docker-ce-cli 
+        - containerd.io 
+        - docker-compose-plugin
+      update_cache: yes
+    vars:
+      ansible_python_interpreter: /usr/bin/python2
+
+  - name: install python package manager
+    yum:
+      name: 
+      - python3-pip
+    vars:
+      ansible_python_interpreter: /usr/bin/python2
+
+  - name: install python sdk
+    become_user: root
+    pip:
+      name:
+        - docker
+        - docker-compose
+      executable: pip3
