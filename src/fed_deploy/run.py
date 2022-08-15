@@ -100,6 +100,7 @@ class ContainerRunner(object):
         if device_type == 'monitor':
             dst_filename = 'fed/monitor/monitor.py'
             dst = os.path.join(FED_DIRPATH, dst_filename)
+            dst = FED_DIRPATH + '/' + dst_filename
         elif device_type == 'server':
             dst_filename = 'fed/server/server.py'
             dst = os.path.join(FED_DIRPATH, dst_filename)
@@ -108,4 +109,5 @@ class ContainerRunner(object):
             dst = os.path.join(FED_DIRPATH, dst_filename)
         else:
             raise Exception("Copying to this device not supported")
+        print("Coping ", src_path, " to ", dst)
         shutil.copy(src_path, dst)

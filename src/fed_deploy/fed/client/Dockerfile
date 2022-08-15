@@ -3,7 +3,11 @@ COPY . /client
 WORKDIR /client
 RUN python3 -m pip install --upgrade pip
 RUN pip install flwr sklearn
-ENV data_partition="WrongDefault"
-ENV client_ip="WrongDefault"
+RUN python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps fed_pack
+ENV partition="WrongDefault"
+ENV client_id="WrongDefault"
 ENV filename="WrongDefault"
-CMD python client.py --partition=${data_partition} --client_id=${client_ip} --filename=${filename}
+ENV data_dir="WrongDefault"
+ENV server_ip="WrongDefault"
+ENV monitor_ip="WrongDefault"
+CMD python client.py

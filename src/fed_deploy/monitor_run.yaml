@@ -26,7 +26,7 @@
       ansible_python_interpreter: /bin/python3
   - name: Pull the fedmonitor image source files from my local machine
     copy:
-      src: "'{{ lookup('ansible.builtin.env', 'FED_DIRPATH') }}' /fed/monitor" #/home/mashrafhemdan/fl_deployment/federated_learning_infrastructure/fed/monitor
+      src: "{{ lookup('ansible.builtin.env', 'FED_DIRPATH') }}/fed/monitor" #/home/mashrafhemdan/fl_deployment/federated_learning_infrastructure/fed/monitor
       dest: /root/federated_learning
   - name: Build monitor image and with build args
     docker_image:
@@ -43,7 +43,7 @@
       name: fedmonitor
       state: started
       image: fedmonitor
-      detach: no
+      detach: yes #no
       #interactive: yes
       # tty: yes
       recreate: yes

@@ -26,11 +26,11 @@
       ansible_python_interpreter: /bin/python3      
   - name: Pull the fedserver image source files from my local machine
     copy:
-      src: /home/mashrafhemdan/fl_deployment/federated_learning_infrastructure/fed/server
+      src: "{{ lookup('ansible.builtin.env', 'FED_DIRPATH') }}/fed/server" #/home/mashrafhemdan/fl_deployment/federated_learning_infrastructure/fed/monitor
       dest: /root/federated_learning
   - name: Pull the utils source file from my local machine
     copy:
-      src: /home/mashrafhemdan/fl_deployment/federated_learning_infrastructure/fed/monitor/utils.py
+      src: "{{ lookup('ansible.builtin.env', 'FED_DIRPATH') }}/fed/monitor/utils.py"
       dest: /root/federated_learning/server
   - name: Build server and with build args
     docker_image:
@@ -47,15 +47,21 @@
       name: fedserver
       state: started
       image: fedserver
-      detach: no
+      detach: yes #no
       # interactive: yes
       # tty: yes
       recreate: yes
       cleanup: yes
       ports:
         - "8080:8080"
+      env:
+        server_id: "{{ hostvars[inventory_hostname].ansible_host }}" # ['ansible_env'].SSH_CONNECTION.split(' ')[2] }}" #"{{ hostvars[item].ansible_host }}" #"{{ ansible_hostname  }}" hostvars[item].ansible_host
+        monitor_ip: "{{ hostvars['fm'].ansible_host }}"
+        partition: "{{ hostvars[inventory_hostname].partition }}"
+        filename: "{{ hostvars[inventory_hostname].filename }}"
+        data_dir: "{{ hostvars[inventory_hostname].data_dir }}"
       volumes:
-        - /root/data:/data
+        - "{{ hostvars[inventory_hostname].data_dir }}:/data"
       restart_policy: always
     register: server_output
     vars:
