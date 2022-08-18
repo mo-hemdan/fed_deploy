@@ -55,7 +55,7 @@
       ports:
         - "8080:8080"
       env:
-        server_id: "{{ hostvars[inventory_hostname].ansible_host }}" # ['ansible_env'].SSH_CONNECTION.split(' ')[2] }}" #"{{ hostvars[item].ansible_host }}" #"{{ ansible_hostname  }}" hostvars[item].ansible_host
+        server_ip: "{{ hostvars[inventory_hostname].ansible_host }}" # ['ansible_env'].SSH_CONNECTION.split(' ')[2] }}" #"{{ hostvars[item].ansible_host }}" #"{{ ansible_hostname  }}" hostvars[item].ansible_host
         monitor_ip: "{{ hostvars['fm'].ansible_host }}"
         partition: "{{ hostvars[inventory_hostname].partition }}"
         filename: "{{ hostvars[inventory_hostname].filename }}"
